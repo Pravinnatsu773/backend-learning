@@ -14,23 +14,23 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowerCase: true,
     },
-    businesses:  [
-        {
+    // businesses:  [
+    //     {
           
-          businessName: {
-            type: String,
-          },
-          businessType: {
-              type: String,
-          },
-          businessUrl: {
-              type: String,
-          },
-          businessPic: {
-              type: String,
-          },
-        },
-      ],
+    //       businessName: {
+    //         type: String,
+    //       },
+    //       businessType: {
+    //           type: String,
+    //       },
+    //       businessUrl: {
+    //           type: String,
+    //       },
+    //       businessPic: {
+    //           type: String,
+    //       },
+    //     },
+    //   ],
 
     password: {
       type: String,

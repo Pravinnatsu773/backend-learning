@@ -49,8 +49,9 @@ const getBusiness = catchAsync(async (req, res, next) => {
   if(!req.params.id){
 return next(new AppError('Please provide businness Id',400))
   }
+  console.log(req.params.id)
   const business = await Business.findById(req.params.id);
-
+console.log(business)
   res.status(200).json({
     status: "success",
 
