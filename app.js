@@ -69,7 +69,7 @@ const start = async ()=>{
         await connectDB(process.env.MONGODB_URI)
 
         app.listen(port, ()=>{
-            console.log(`Listening the server on port: http://localhost:${port}`)
+            console.log(`Listening the server on port: ${port}`)
         })
 
     } catch (error) {
