@@ -1,5 +1,7 @@
-.env
-private.ec.key
-public.pem
-.key
-.pem
+# .env
+# private.ec.key
+# public.pem
+# .key
+# .pem
+
+node_modules
