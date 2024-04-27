@@ -38,16 +38,16 @@ const userSchema = new mongoose.Schema(
       minLength: 8,
       select: false,
     },
-    passwordConfirm: {
-      type: String,
-      required: [true, "Please confirm your password"],
-      validate: {
-        validator: function (el) {
-          return el === this.password;
-        },
-        message: "Password is not same",
-      },
-    },
+    // passwordConfirm: {
+    //   type: String,
+    //   required: [true, "Please confirm your password"],
+    //   validate: {
+    //     validator: function (el) {
+    //       return el === this.password;
+    //     },
+    //     message: "Password is not same",
+    //   },
+    // },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -67,7 +67,7 @@ userSchema.pre("save", async function (next) {
 
   this.password = await bcrypt.hash(this.password, 12);
 
-  this.passwordConfirm = undefined;
+  // this.passwordConfirm = undefined;
 
   next();
 });

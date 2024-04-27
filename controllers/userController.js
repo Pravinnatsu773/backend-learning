@@ -70,7 +70,7 @@ const updateMe = async (req, res, next) => {
   console.log(req.file);
   console.log(req.body);
 
-  if (req.body.password || req.body.passwordConfirm) {
+  if (req.body.password) {
     return next(new AppError("Unnecessary password field", 400));
   }
 

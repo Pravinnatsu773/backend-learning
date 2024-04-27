@@ -46,12 +46,12 @@ data:{
 
 const signup = catchAsync(async (req, res, next) => {
 
-  const {email, password, passwordConfirm} = req.body; 
+  const {email, password} = req.body; 
   const user = await User.findOne({ email: email });
   if(user){
     return next(new AppError('User already exist with this email', 403));
   }
-  const newUser = await User.create({email, password, passwordConfirm});
+  const newUser = await User.create({email, password});
 
 createAndSendToken(newUser, 200, res);
 });
@@ -133,7 +133,7 @@ const forgotPassword = catchAsync(async (req,res,next)=>{
 
   const resetURL = `${req.protocol}://${req.get('host')}/api/v1/user/resetPassword/${resetToken}`;
   
-  const message = `Forgot your password? Submit a Patch request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+  const message = `Forgot your password? Submit a Patch request with your new password to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
 
 try{
   await sendEmail({
@@ -176,7 +176,6 @@ const resetPassword = catchAsync(async(req,res,next)=>{
     return next(new AppError('Token is invalid or has expired', 400))
   }
   user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
 
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
