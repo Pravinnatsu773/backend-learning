@@ -15,9 +15,16 @@ const userRoutes = require('./routes/userRoutes');
 const businessRoutes = require('./routes/businessRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
+// const firebase  = require('firebase')
 const dotenv = require('dotenv');
+
+
 dotenv.config()
 
+
+
+
+// firebase.initializeApp(config.firebaseConfig)
 
 app.use(helmet())
 

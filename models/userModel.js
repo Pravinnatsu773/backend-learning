@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema(
     //     message: "Password is not same",
     //   },
     // },
+
+    imageUrl:{
+      type: String,
+    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
