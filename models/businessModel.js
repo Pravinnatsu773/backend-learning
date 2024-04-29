@@ -11,8 +11,9 @@ const businessSchema = new mongoose.Schema(
       required: [true, "Please provide business name"],
     },
     businessType: {
-        type: String,
-        required: [true, "Please provide business type"],
+      type: Map,
+      of: String,
+      required: [true, "Please provide business type"],
     },
     businessUrl: {
         type: String,

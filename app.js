@@ -13,6 +13,8 @@ const globalErrorHandler = require('./controllers/errorController');
 const connectDB = require("./db/connectDb");
 const userRoutes = require('./routes/userRoutes');
 const businessRoutes = require('./routes/businessRoutes');
+
+const industryRoutes = require('./routes/industryRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
 // const firebase  = require('firebase')
@@ -55,6 +57,8 @@ app.use('/api',limiter);
 app.use('/api/v1/user',userRoutes );
 
 app.use('/api/v1/business',businessRoutes );
+
+app.use('/api/v1/industry',industryRoutes );
 
 app.use('/api/v1/review',reviewRoutes );
 

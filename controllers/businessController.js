@@ -3,6 +3,63 @@ const User = require("./../models/userModel");
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError') ;
 
+const sharp = require('sharp');
+const { compress } = require('compressorjs');
+const path = require('path');
+const { getStorage} = require('firebase-admin/storage');
+
+
+const storage = getStorage().bucket();
+
+
+const uploadUserPhoto  = catchAsync(async (req, res, next) => {
+  if(typeof req.file == "undefined"){
+next()
+return
+  }
+  const file = req.file;
+    const folderName = 'business'; // Specify your folder name here
+    const fileName = Date.now() + path.extname(file.originalname);
+    const fileUpload = storage.file(`${folderName}/${fileName}`);
+    // Create a writable stream and pipe the file to it
+
+    const stream = fileUpload.createWriteStream({
+      metadata: {
+        contentType: file.mimetype
+      }
+    });
+
+    let compressedBuffer;
+    if (file.mimetype.startsWith('image')) {
+      // Compress image using sharp
+      const image = sharp(file.buffer);
+      compressedBuffer = await image.resize({quality:0.6, width: 180 }).toBuffer();
+    } else {
+      // Compress non-image file using Compressor.js
+      compressedBuffer = compress(file.buffer, {
+        quality: 0.5, // Adjust quality as needed
+        mimeType: file.mimetype
+      }).data;
+    }
+  
+    stream.on('error', (err) => {
+      console.error('Error uploading file:', err);
+      res.status(500).send('Error uploading file.');
+    });
+  
+    stream.on('finish', async() => {
+      const [downloadUrl] = await fileUpload.getSignedUrl({
+        action: 'read',
+        expires: '03-09-2491' // This is an arbitrary date far in the future
+      });
+      req.body.businessPic  = downloadUrl
+      next()
+      // res.status(200).send('File uploaded successfully.');
+    });
+  
+    stream.end(compressedBuffer);
+    
+})
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -19,6 +76,7 @@ const filterObj = (obj, ...allowedFields) => {
 
 const createBusiness = catchAsync(async (req, res, next) => {
   req.body.userId = req.user._id;
+
   const businessData = await Business.create(req.body);
 
   const {businessName, businessType, businessUrl, businessPic} = businessData;
@@ -49,9 +107,8 @@ const getBusiness = catchAsync(async (req, res, next) => {
   if(!req.params.id){
 return next(new AppError('Please provide businness Id',400))
   }
-  console.log(req.params.id)
   const business = await Business.findById(req.params.id);
-console.log(business)
+
   res.status(200).json({
     status: "success",
 
@@ -92,5 +149,6 @@ module.exports = {
   getAllBusiness,
   getBusiness,
   updateBusiness,
-  deleteBusiness
+  deleteBusiness,
+  uploadUserPhoto
 };

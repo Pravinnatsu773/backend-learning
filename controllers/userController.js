@@ -26,7 +26,7 @@ const storage = getStorage().bucket();
 
 const uploadUserPhoto  = catchAsync(async (req, res, next) => {
   const file = req.file;
-    const folderName = 'files'; // Specify your folder name here
+    const folderName = 'users'; // Specify your folder name here
     const fileName = Date.now() + path.extname(file.originalname);
     const fileUpload = storage.file(`${folderName}/${fileName}`);
     // Create a writable stream and pipe the file to it
@@ -55,7 +55,6 @@ const uploadUserPhoto  = catchAsync(async (req, res, next) => {
     });
   
     stream.on('finish', async() => {
-      console.log('File uploaded successfully.');
       const [downloadUrl] = await fileUpload.getSignedUrl({
         action: 'read',
         expires: '03-09-2491' // This is an arbitrary date far in the future
@@ -108,8 +107,7 @@ const getAllUser = catchAsync(async (req, res, next) => {
 });
 
 const updateMe = async (req, res, next) => {
-  // console.log(req.file);
-  console.log(req.body);
+
 
   if (req.body.password) {
     return next(new AppError("Unnecessary password field", 400));
